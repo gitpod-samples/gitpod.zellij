@@ -1,3 +1,5 @@
+https://github.com/axonasif/gitpod.zellij/assets/39482679/89d3ad1c-7c36-43d9-924b-29a65bcf591a
+
 Zellij plugin for Gitpod, with `.gitpod.yml` tasks integration. <!-- Provides theme, resource meters, indicators, keybindings and menus. -->
 
 <!-- Can be used locally as well for the `ui:theme` module, other [modules](#modules) will be disabled outside of Gitpod. -->
