@@ -1,0 +1,8 @@
+image: gitpod/workspace-rust:latest
+
+tasks:
+  - name: Test plugin
+    init: cargo build # cache build artifacts using prebuild
+    command: |
+      cargo run &
+      zellij
