@@ -63,7 +63,7 @@ pub fn attach() -> Result<(), Report> {
         let task_name = &capture["task_name"];
         let task_status = &capture["task_status"];
 
-        if task_status == "stopped" {
+        if task_status == "stopped" || task_id.is_empty() {
             continue;
         }
 
