@@ -22,18 +22,20 @@ pub fn attach() -> Result<(), Report> {
     // Find a usable CLI editor and start it on the first tab
     let mut editor: Option<String> = None;
     if let Ok(value) = std::env::var("EDITOR") {
-        if value == "/usr/bin/nano" {
-            let editors = ["nvim", "vim", "emacs", "helix"];
-            for e in editors {
-                if let Ok(path) = which(e) {
-                    editor = Some(path.to_string_lossy().to_string());
-                    break;
+        if !value.trim().is_empty() {
+            if value == "/usr/bin/nano" {
+                let editors = ["nvim", "vim", "emacs", "helix"];
+                for e in editors {
+                    if let Ok(path) = which(e) {
+                        editor = Some(path.to_string_lossy().to_string());
+                        break;
+                    }
                 }
             }
-        }
-        // In case no match was found (unlikely)
-        if editor.is_none() {
-            editor = Some(value);
+            // In case no match was found (unlikely) and EDITOR is not empty
+            if editor.is_none() {
+                editor = Some(value);
+            }
         }
     }
     Command::new("zellij")
@@ -95,4 +97,51 @@ pub fn attach() -> Result<(), Report> {
         .status()?;
 
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::env;
+
+    #[test]
+    fn test_empty_editor_variable_handling() {
+        // Test that empty EDITOR variable doesn't cause issues
+        env::set_var("EDITOR", "");
+        
+        // This should not panic and should fall back to default
+        let mut editor: Option<String> = None;
+        if let Ok(value) = std::env::var("EDITOR") {
+            if !value.trim().is_empty() {
+                if value == "/usr/bin/nano" {
+                    let editors = ["nvim", "vim", "emacs", "helix"];
+                    for e in editors {
+                        if let Ok(path) = which(e) {
+                            editor = Some(path.to_string_lossy().to_string());
+                            break;
+                        }
+                    }
+                }
+                if editor.is_none() {
+                    editor = Some(value);
+                }
+            }
+        }
+        
+        // With empty EDITOR, editor should remain None
+        assert!(editor.is_none());
+        
+        // Test with whitespace-only EDITOR
+        env::set_var("EDITOR", "   ");
+        let mut editor: Option<String> = None;
+        if let Ok(value) = std::env::var("EDITOR") {
+            if !value.trim().is_empty() {
+                editor = Some(value);
+            }
+        }
+        assert!(editor.is_none());
+        
+        // Clean up
+        env::remove_var("EDITOR");
+    }
 }
