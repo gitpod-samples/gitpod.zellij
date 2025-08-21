@@ -1,0 +1,15 @@
+tasks:
+    command-0:
+        command: |
+            cargo run &
+            zellij
+        dependsOn:
+            - init-000
+        description: init task migrated from .gitpod.yml
+        name: 'Test plugin: command'
+        triggeredBy:
+            - postDevcontainerStart
+    init-000:
+        command: cargo build
+        description: init task migrated from .gitpod.yml
+        name: 'Test plugin: init'

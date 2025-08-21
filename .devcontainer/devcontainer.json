@@ -1,0 +1,15 @@
+{
+  "name": "gitpod.zellij",
+  "image": "gitpod/workspace-rust:latest",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "installDockerBuildx": false,
+      "installDockerComposeSwitch": false,
+      "moby": false
+    }
+  },
+  "remoteUser": "gitpod",
+  "containerUser": "gitpod",
+  "workspaceFolder": "/workspace/gitpod.zellij",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace/gitpod.zellij,type=bind"
+}
